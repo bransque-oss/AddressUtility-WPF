@@ -1,0 +1,38 @@
+﻿<Application x:Class="AddressUtility.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AddressUtility"
+             StartupUri="Views\MainView.xaml">
+    <Application.Resources>
+        <!--Стиль кнопок-->
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <!--Стиль текстового окна и всплывающей подсказки при ошибке валидации-->
+        <Style x:Key="txtBoxValidation" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="Orange"/>
+                    <!--Подсказка показывающая ошибки-->
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <!--Сделано с помощью PlacementTarget, потому что привязка по ElementName не работает в ToolTip-->
+                            <ToolTip DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget}">
+                                <ItemsControl ItemsSource="{Binding (Validation.Errors)}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ErrorContent}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ToolTip>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Application.Resources>
+</Application>

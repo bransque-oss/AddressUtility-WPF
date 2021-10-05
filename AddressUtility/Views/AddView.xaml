@@ -1,0 +1,53 @@
+﻿<Window x:Class="AddressUtility.Views.AddView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AddressUtility.Views"
+        mc:Ignorable="d"
+        Name ="addWindow" Title="Добавление объекта" SizeToContent="WidthAndHeight" FontSize="15">
+    <Grid Margin="5" Height="140" Width="400">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--"Добавить в"-->
+            <RowDefinition Height="Auto"/>
+            <!--Тип-->
+            <RowDefinition Height="Auto"/>
+            <!--Название-->
+            <RowDefinition Height="Auto"/>
+            <!--Кнопки-->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Добавить в" Margin="0 0 0 5" 
+               HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="0 0 0 5" VerticalAlignment="Center">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} {1}">
+                    <Binding Path="ParentItemAtomShortName"/>
+                    <Binding Path ="ParentItemName"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <Label Grid.Row="1" Grid.Column="0" Content="Тип" Margin="0 0 0 5" HorizontalContentAlignment="Right"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0 0 0 5" VerticalContentAlignment="Center"
+                  ItemsSource="{Binding AtomsAndTypes}"
+                  DisplayMemberPath="AtomName"
+                  SelectedItem="{Binding SelectedAtomAndType, Mode=OneWayToSource}"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Название" Margin="0 0 0 5" HorizontalContentAlignment="Right"/>
+        <!--При режиме привязки OneWayToSource перестает работать валидация, потому что не считывается свойство Validation.HasError-->
+        <TextBox Name="addressName" Grid.Row="2" Grid.Column="1" Margin="0 0 0 5" VerticalContentAlignment="Center"
+                 Text="{Binding AddressObjName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource txtBoxValidation}"/>
+        <DockPanel Grid.Row="3" Grid.Column="1">
+            <Button Content="Отменить" HorizontalAlignment="Left"
+                    Command="{Binding CancelCmd}"
+                    CommandParameter="{Binding ElementName=addWindow, Mode=OneWay}"/>
+            <Button Content="Сохранить" HorizontalAlignment="Right"
+                    Command="{Binding SaveCmd}"
+                    CommandParameter="{Binding ElementName=addWindow, Mode=OneWay}"/>
+        </DockPanel>
+    </Grid>
+</Window>
